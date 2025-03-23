@@ -137,9 +137,9 @@ class Gr1ArmsOnlyDataConfig(BaseDataConfig):
 
 
 class So100DataConfig(BaseDataConfig):
-    video_keys = ["video.webcam"]
-    state_keys = ["state.single_arm", "state.gripper"]
-    action_keys = ["action.single_arm", "action.gripper"]
+    video_keys = ["video.main", "video.cv", "video.webcam"]
+    state_keys = ["state.main_arm", "state.main_gripper", "state.cv_arm", "state.cv_gripper"]
+    action_keys = ["action.main_arm", "action.main_gripper", "action.cv_arm", "action.cv_gripper"]
     language_keys = ["annotation.human.task_description"]
     observation_indices = [0]
     action_indices = list(range(16))

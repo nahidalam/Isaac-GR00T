@@ -45,7 +45,7 @@ class Config:
     """Data configuration name from DATA_CONFIG_MAP."""
 
     # Training parameters
-    batch_size: int = 16
+    batch_size: int = 32
     """Batch size per GPU for training."""
 
     max_steps: int = 10000

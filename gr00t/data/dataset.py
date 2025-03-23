@@ -52,6 +52,7 @@ def calculate_dataset_statistics(parquet_paths: list[Path]) -> dict:
         desc="Collecting all parquet files...",
     ):
         # Load the parquet file
+        print(parquet_path)
         parquet_data = pd.read_parquet(parquet_path)
         parquet_data = parquet_data
         all_low_dim_data_list.append(parquet_data)

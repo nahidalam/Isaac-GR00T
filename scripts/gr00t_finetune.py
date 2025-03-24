@@ -28,7 +28,6 @@ from gr00t.data.schema import EmbodimentTag
 from gr00t.experiment.data_config import DATA_CONFIG_MAP
 from gr00t.experiment.runner import TrainRunner
 from gr00t.model.gr00t_n1 import GR00T_N1
-from gr00t.utils.peft import get_lora_model
 
 
 @dataclass
@@ -46,7 +45,7 @@ class Config:
     """Data configuration name from DATA_CONFIG_MAP."""
 
     # Training parameters
-    batch_size: int = 16
+    batch_size: int = 32
     """Batch size per GPU for training."""
 
     max_steps: int = 10000
@@ -87,15 +86,6 @@ class Config:
     warmup_ratio: float = 0.05
     """Ratio of total training steps used for warmup."""
 
-    lora_rank: int = 0
-    """Rank for the LORA model."""
-
-    lora_alpha: int = 16
-    """Alpha value for the LORA model."""
-
-    lora_dropout: float = 0.1
-    """Dropout rate for the LORA model."""
-
     dataloader_num_workers: int = 8
     """Number of workers for data loading."""
 
@@ -119,10 +109,16 @@ def main(config: Config):
     """Main training function."""
     # ------------ step 1: load dataset ------------
     embodiment_tag = EmbodimentTag(config.embodiment_tag)
+    print("embodiment_tag")
+    print(embodiment_tag)
 
     # 1.1 modality configs and transforms
     data_config_cls = DATA_CONFIG_MAP[config.data_config]
+    print("data_config_cls ....")
+    print(data_config_cls)
     modality_configs = data_config_cls.modality_config()
+    print("modality_configs.....")
+    print(modality_configs)
     transforms = data_config_cls.transform()
 
     # 1.2 data loader
@@ -142,18 +138,12 @@ def main(config: Config):
         tune_projector=config.tune_projector,  # action head's projector
         tune_diffusion_model=config.tune_diffusion_model,  # action head's DiT
     )
+    #print("model ......")
+    #print(model)
 
     # Set the model's compute_dtype to bfloat16
     model.compute_dtype = "bfloat16"
     model.config.compute_dtype = "bfloat16"
-
-    if config.lora_rank > 0:
-        model = get_lora_model(
-            model,
-            rank=config.lora_rank,
-            lora_alpha=config.lora_alpha,
-            lora_dropout=config.lora_dropout,
-        )
 
     # 2.1 modify training args
     training_args = TrainingArguments(

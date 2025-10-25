@@ -335,10 +335,15 @@ class LeRobotSingleDataset(Dataset):
         with open(le_info_path, "r") as f:
             le_info = json.load(f)
         simplified_modality_meta["video"] = {}
+        # debug
+        print (le_modality_meta.video)
         for new_key in le_modality_meta.video:
             original_key = le_modality_meta.video[new_key].original_key
             if original_key is None:
                 original_key = new_key
+
+            # debug
+            print (original_key)
             le_video_meta = le_info["features"][original_key]
             height = le_video_meta["shape"][le_video_meta["names"].index("height")]
             width = le_video_meta["shape"][le_video_meta["names"].index("width")]

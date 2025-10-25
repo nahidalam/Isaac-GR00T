@@ -782,6 +782,7 @@ class AgibotGenie1DataConfig(BaseDataConfig):
 ###########################################################################################
 
 DATA_CONFIG_MAP = {
+    "DualSo100DataConfig": DualSo100DataConfig(),
     "fourier_gr1_arms_waist": FourierGr1ArmsWaistDataConfig(),
     "fourier_gr1_arms_only": FourierGr1ArmsOnlyDataConfig(),
     "fourier_gr1_full_upper_body": FourierGr1FullUpperBodyDataConfig(),
